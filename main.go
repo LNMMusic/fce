@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/LNMMusic/fce/config"
 	"github.com/LNMMusic/fce/client"
@@ -17,15 +17,6 @@ func main() {
 	defer client.Mongo.DisconnectClient()
 
 	// App
-	var persona = &services.Sujeto {
-		Nombre:		"Lucas",
-		Edad:		23,
-		Personeria:	3,
-	}
-	
-	fmt.Printf("Hi %s, you have %d and you are %s",
-		persona.Nombre,
-		persona.Edad,
-		persona.Personeria.String(),
-	)
+	sujeto := services.CreateSujeto()
+	log.Printf("data -> %#v", sujeto)
 }

@@ -1,4 +1,4 @@
-package services
+package models
 
 import (
 	"time"
@@ -24,6 +24,22 @@ func (e EnumPersoneria) String() string {
 	}
 }
 
+type EnumNacionalidad int
+const (
+	Nativo		EnumNacionalidad = iota
+	Extranjero
+)
+func (e EnumNacionalidad) String() string {
+	switch e {
+	case Nativo:
+		return "Nativo"
+	case Extranjero:
+		return "Extranjero"
+	default:
+		return ""
+	}
+}
+
 
 // Structs
 type Actividad struct {
@@ -41,8 +57,10 @@ type Sujeto struct {
 	Nombre			string
 	Edad			uint8
 	Personeria		EnumPersoneria		// takes the const type based on index
-	Nacionalidad	string
+	Nacionalidad	EnumNacionalidad
 
 	// Aspectos
-	Actividades		[]Actividad
+	Actividades		[]*Actividad
 }
+
+// Enums will parsed on ints and More Complex will be filtered on the Front with JSON available options
