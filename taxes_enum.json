@@ -1,0 +1,21 @@
+{
+    "enums": {
+        "operacion": [
+            "venta",
+            "compra",
+            "permuta",
+            "importacion",
+            "exportacion"
+        ],
+        "objeto": [
+            "bienMueble",
+            "bienInmueble",
+            "servicio",
+            "other"
+        ],
+        "titulo": [
+            "oneroso",
+            "gratuito"
+        ]
+    }
+}

@@ -1,66 +1,82 @@
 package models
 
 import (
+	"fmt"
 	"time"
 )
 
-// Enums [const block -> tuple of types enumerated by index]
-type EnumPersoneria int
-const (
-	Juridica	EnumPersoneria = iota
-	Humana
-	Sucesion
-)
-func (e EnumPersoneria) String() string {
-	switch e {
-	case Juridica:
-		return "Juridica"
-	case Humana:
-		return "Humana"
-	case Sucesion:
-		return "Sucesion"
-	default:
-		return ""
+
+// STRUCTS
+type Tiempo struct {
+	Inicio			time.Time			`bson:"inicio,omitempty"`
+	Fin				time.Time			`bson:"fin,omitempty"`
+}
+func (t *Tiempo) Hours() float64 {
+	return t.Fin.Sub(t.Inicio).Hours()
+}
+
+type Tax struct {
+	IVA		float64
+	IIGG	float64
+}
+
+type Operacion struct {
+	Tipo			EnumOperacion		`bson:"tipo,omitempty"`
+	Objeto			EnumObjeto			`bson:"objeto,omitempty"`
+	Titulo			EnumTitulo			`bson:"titulo,omitempty"`
+	Descripcion		string				`bson:"descripcion,omitempty"`
+
+	Ubicacion		string				`bson:"ubicacion,omitempty"`
+	Duracion		*Tiempo				`bson:"duracion,omitempty"`
+	Residencia		bool				`bson:"residencia,omitempty"`
+
+	Taxes			Tax					`bson:"taxes,omitempty"`
+}
+// constructor [init | gen]
+func OperacionNew(id int) *Operacion {
+	return &Operacion {
+		Tipo:			0,
+		Objeto:			0,
+		Titulo:			0,
+		Descripcion:	fmt.Sprintf("Descripcion [%d]", id),
+
+		Ubicacion:		fmt.Sprintf("Ubicacion [%d]", id),
+		Duracion:		&Tiempo {
+			Inicio:		time.Date(2009, 11, 17, 20, 34, 58, 651387237, time.UTC),
+			Fin:		time.Now(),
+		},
 	}
 }
 
-type EnumNacionalidad int
-const (
-	Nativo		EnumNacionalidad = iota
-	Extranjero
-)
-func (e EnumNacionalidad) String() string {
-	switch e {
-	case Nativo:
-		return "Nativo"
-	case Extranjero:
-		return "Extranjero"
-	default:
-		return ""
-	}
-}
-
-
-// Structs
-type Actividad struct {
-	Accion			string
-	Objeto			string
-	Descripcion		string
-
-	Inicio			time.Time
-	Fin				time.Time
-
-	Ubicacion		string
-}
 
 type Sujeto struct {
-	Nombre			string
-	Edad			uint8
-	Personeria		EnumPersoneria		// takes the const type based on index
-	Nacionalidad	EnumNacionalidad
+	Nombre			string				`bson:"nombre,omitempty"`
+	Edad			int					`bson:"edad,omitempty"`
+	Personeria		EnumPersoneria		`bson:"personeria,omitempty"`
+	Nacionalidad	EnumNacionalidad	`bson:"nacionalidad,omitempty"`
 
 	// Aspectos
-	Actividades		[]*Actividad
+	Operaciones		[]*Operacion		`bson:"actividades,omitempty"`
 }
+// constructor [init | gen]
+func SujetoNew() *Sujeto {
+	return &Sujeto {
+		Nombre:			"Lucas",
+		Edad:			23,
+		Personeria:		0,
+		Nacionalidad:	0,
 
-// Enums will parsed on ints and More Complex will be filtered on the Front with JSON available options
+		Operaciones:	[]*Operacion {
+			OperacionNew(1),
+			OperacionNew(2),
+			OperacionNew(3),
+		},
+	}
+}
+// methods
+func (s *Sujeto) is_underAge() bool {
+	if s.Edad < 18 {
+		return true
+	}
+	return false
+}

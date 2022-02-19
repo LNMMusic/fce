@@ -1,0 +1,28 @@
+{
+    "IVA": {
+        "Humana": {
+            "op0-ob0-t0": 0.10,
+            "op0-ob5-t0": 0.20
+        },
+        "Juridica": {
+            "op2-ob0-t0": 0.30,
+            "op2-ob4-t0": 0.50
+        },
+        "Sucesion": {
+            "op2-ob1-t0": 0.70,
+            "op3-ob0-t1": 0.90
+        }
+    },
+
+    "IIGG": {
+        "Humana": {
+            "op0-ob0": 0.10
+        },
+        "Juridica": {
+            "op2-ob0": 0.30
+        },
+        "Sucesion": {
+            "op3-ob0": 0.90
+        }
+    }
+}

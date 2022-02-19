@@ -6,6 +6,7 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 
 	"github.com/LNMMusic/fce/config"
 )
@@ -32,6 +33,11 @@ func (m *MongoInstance) ConnectClient() {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	err = client.Connect(ctx); if err != nil {
 		log.Fatalf("Failed to Connect to Mongo-DB -> %v", err)
+	}
+
+	// Test
+	if err := m.Client.Ping(ctx, readpref.Primary()); err != nil {
+		log.Fatalf("Failed to Test Connection to Mongo-DB -> %v", err)
 	}
 
 	log.Println("Succeed to Connect to Mongo-DB")
